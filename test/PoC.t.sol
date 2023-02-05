@@ -28,9 +28,12 @@ contract PoCTest is Test {
 
     // MUST NOT use cheatcodes
     function testCanGetIntoJessysHackerHouse() public {
+        vm.startPrank(attacker);
+
         // -- EXPLOIT START --
 
         // -- EXPLOIT END --
+        vm.stopPrank();
 
         // MUST NOT remove
         _validate();
