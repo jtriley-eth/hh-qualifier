@@ -2,28 +2,23 @@
 pragma solidity ^0.8.17;
 
 import "forge-std/Test.sol";
-
-import {UpgradeableWETH} from "src/UpgradeableWETH.sol";
-import {useMinimumViableProxy} from "mini-proxy/Deployer.sol";
+import "src/FlashToken.sol";
+import "src/FlashReceiver.sol";
 
 contract PoCTest is Test {
-    address implementation; 
-    UpgradeableWETH weth;
-    address attacker = vm.addr(1);
-
-    // MUST NOT use this address in `testCanGetIntoJessysHackerHouse`
-    address __innocent = vm.addr(2);
+    address __innocent = vm.addr(1);
+    address attacker = vm.addr(2);
+    FlashToken token;
+    FlashReceiver receiver;
+    uint256 initBalalnce = 10 ether;
 
     // MUST NOT change this function
     function setUp() public {
-        implementation = address(new UpgradeableWETH());
-        weth = UpgradeableWETH(payable(useMinimumViableProxy(implementation)));
-        weth.initialize();
-
-        vm.deal(__innocent, 1 ether);
-        vm.prank(__innocent);
-        weth.deposit{value: 1 ether}();
-        assertEq(weth.balanceOf(__innocent), 1 ether);
+        vm.startPrank(__innocent);
+        token = new FlashToken();
+        receiver = new FlashReceiver(address(0), address(token));
+        token.transfer(address(receiver), token.balanceOf(__innocent));
+        vm.stopPrank();
     }
 
     // MUST NOT use cheatcodes
@@ -41,8 +36,6 @@ contract PoCTest is Test {
 
     // MUST NOT change this function
     function _validate() internal {
-        vm.expectRevert(bytes(""));
-        vm.prank(__innocent);
-        weth.withdraw(1 ether);
+        assertTrue(token.balanceOf(address(receiver)) < initBalalnce);
     }
 }

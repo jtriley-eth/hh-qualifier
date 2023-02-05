@@ -1,3 +1,2 @@
 forge-std/=lib/forge-std/src/
-oz-up/=lib/openzeppelin-contracts-upgradeable/contracts/
-mini-proxy/=lib/minimum-viable-proxy/src/
+oz/=lib/openzeppelin-contracts/contracts/
