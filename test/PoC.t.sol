@@ -10,7 +10,7 @@ contract PoCTest is Test {
     address attacker = vm.addr(2);
     FlashToken token;
     FlashReceiver receiver;
-    uint256 initBalalnce = 10 ether;
+    uint256 initBalance = 10 ether;
 
     // MUST NOT change this function
     function setUp() public {
@@ -36,6 +36,6 @@ contract PoCTest is Test {
 
     // MUST NOT change this function
     function _validate() internal {
-        assertTrue(token.balanceOf(address(receiver)) < initBalalnce);
+        assertTrue(token.balanceOf(address(receiver)) < initBalance);
     }
 }
