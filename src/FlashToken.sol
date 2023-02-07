@@ -9,6 +9,6 @@ contract FlashToken is ERC20FlashMint {
     }
 
     function _flashFee(address, uint256 amount) internal pure override returns (uint256) {
-        return amount * 97 / 100;
+        return amount * 3 / 100;
     }
 }
